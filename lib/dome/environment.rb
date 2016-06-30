@@ -6,6 +6,8 @@ module Dome
       @environment = directories[-1]
       @account     = directories[-2]
       @settings    = Dome::Settings.new
+      ENV['AWS_PROFILE'] = @account
+      ENV['AWS_DEFAULT_REGION'] = 'eu-west-1'
     end
 
     def team
@@ -18,20 +20,6 @@ module Dome
 
     def environments
       @settings.parse['environments']
-    end
-
-    def aws_credentials
-      @aws_credentials ||= AWS::ProfileParser.new.get(@account)
-      @aws_credentials.key?(:output) && @aws_credentials.delete(:output)
-      return @aws_credentials
-    rescue RuntimeError
-      raise "No credentials found for account: '#{@account}'."
-    end
-
-    def populate_aws_access_keys
-      ENV['AWS_ACCESS_KEY_ID']     = aws_credentials[:access_key_id]
-      ENV['AWS_SECRET_ACCESS_KEY'] = aws_credentials[:secret_access_key]
-      ENV['AWS_DEFAULT_REGION']    = aws_credentials[:region]
     end
 
     def valid_account?(account_name)

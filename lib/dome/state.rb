@@ -15,7 +15,7 @@ module Dome
     end
 
     def s3_client
-      @s3_client ||= Aws::S3::Client.new(@environment.aws_credentials)
+      @s3_client ||= Aws::S3::Client.new
     end
 
     def s3_bucket_exists?(bucket_name)
@@ -63,6 +63,7 @@ module Dome
     end
 
     def synchronise_s3_state
+
       puts 'Synchronising the remote S3 state...'
       command         = 'terraform remote config -backend=S3'\
             " -backend-config='bucket=#{state_bucket}' -backend-config='key=#{state_file}'"

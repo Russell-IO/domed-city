@@ -17,7 +17,6 @@ module Dome
       @environment.invalid_environment_message unless @environment.valid_environment? environment
       puts "Team: #{@environment.team.colorize(:green)}"
       puts '----------------------------------------------------------------'
-      @environment.populate_aws_access_keys
     end
 
     def plan
